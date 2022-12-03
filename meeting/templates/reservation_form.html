@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}カジュアル面談予約フォーム{% endblock %}
+
+{% block content %}
+<!-- BootstrapのContainerクラスを用いて、フォームを中央寄せする -->
+<div class="container">
+    <h1>カジュアル面談予約フォーム</h1>
+    <form action="/reservations?manager_id=1" method="post">
+        <div class="form-group">
+            <label for="name">名前:</label>
+            <!-- BootstrapのForm Controlクラスを用いて、フォームの入力欄をデザインする -->
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="phone_number">電話番号:</label>
+            <input type="text" class="form-control" id="phone_number" name="phone_number">
+        </div>
+        <div class="form-group">
+            <label for="email">メールアドレス:</label>
+            <input type="text" class="form-control" id="email" name="email">
+        </div>
+        <div class="form-group">
+            <label for="time_slot">予約時間:</label>
+            <input type="datetime-local" class="form-control" id="time_slot" name="time_slot">
+        </div>
+        <div class="form-group">
+            <label for="purpose">目的:</label>
+            <input type="text" class="form-control" id="purpose" name="purpose">
+        </div>
+        <button type="submit" class="btn btn-primary">予約する</button>
+    </form>
+</div>
+{% endblock %}
