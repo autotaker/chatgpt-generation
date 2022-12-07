@@ -16,6 +16,13 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
+    /**
+     * 予約を作成する
+     * 
+     * @param managerId       予約管理者ID
+     * @param reservationForm 予約情報
+     * @return 予約ID
+     */
     @PostMapping(value = "/reservations", consumes = { "application/json", "application/x-www-form-urlencoded" })
     public ResponseEntity<AppResponse> createReservation(@RequestParam("manager_id") Long managerId,
             @RequestBody ReservationForm reservationForm) {
@@ -27,6 +34,12 @@ public class ReservationController {
         }
     }
 
+    /**
+     * 予約管理者を作成する
+     * 
+     * @param reservationManagerForm 予約管理者情報
+     * @return 予約管理者ID
+     */
     @PostMapping(value = "/managers", consumes = { "application/json", "application/x-www-form-urlencoded" })
     public ResponseEntity<AppResponse> createReservationManager(
             @RequestBody ReservationManagerForm reservationManagerForm) {

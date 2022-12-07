@@ -12,6 +12,14 @@ public class ReservationService {
     @Autowired
     private ReservationManagerRepository reservationManagerRepository;
 
+    /**
+     * 予約を作成する
+     * 
+     * @param managerId       予約管理者ID
+     * @param reservationForm 予約情報
+     * @return 予約情報
+     * @throws ServiceException 予約管理者が見つからない場合
+     */
     public Reservation createReservation(Long managerId, ReservationForm reservationForm) throws ServiceException {
         Optional<ReservationManager> reservationManager = reservationManagerRepository.findById(managerId);
         if (!reservationManager.isPresent()) {
@@ -27,6 +35,13 @@ public class ReservationService {
         return reservation;
     }
 
+    /**
+     * 予約管理者を作成する
+     * 
+     * @param reservationManagerForm 予約管理者のフォーム
+     * @return 作成した予約管理者
+     * @throws ServiceException 予約管理者が既に存在している場合
+     */
     public ReservationManager createReservationManager(ReservationManagerForm reservationManagerForm)
             throws ServiceException {
         Optional<ReservationManager> reservationManager = reservationManagerRepository
