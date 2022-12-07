@@ -24,49 +24,6 @@
 - O/R Mapper: Spring Data JPA
 - ビルドツール: Gradle
 
-これから以下のエンドポイントを実装する。
-
-- エンドポイント: `POST /reservations`
-- URL Parameters
-  - manager_id: 予約管理者のID
-- Form
-  - name: 名前
-  - email: 連絡先メールアドレス
-  - phone_number: 連絡先電話番号
-  - time_slot: 予約時間
-  - purpose: 面談の目的
-- Response
-  - 成功時:
-    - status: "ok"
-    - id: 予約ID
-  - 失敗時:
-    - status: "error"
-    - error_code: int
-    - reason: string
-- テーブル構成
-  - reservationsテーブル
-    - reservation_id
-    - name
-    - email
-    - phone_number
-    - time_slot: DateTime
-    - purpose
-    - manager_id
-    - created_at
-    - updated_at
-  - reservation_managersテーブル
-    - manager_id
-    - name
-    - email
-    - phone_number
-    - created_at
-    - updated_at
-- ビジネスロジック
-  - フォームから予約情報を読み取る。
-  - リクエストパラメータから予約管理者のIDを読み取る。
-  - IDから予約管理者を検索し、予約情報を登録し、予約IDを返す
-  - 予約管理者が存在しない場合、エラーを返す
-
 # クラス一覧
 ## Controller
 - ReservationController
@@ -78,6 +35,7 @@
   - ビジネスロジックを担当
   - Repositoryからデータを取得し、ビジネスロジックを実行する
   - ビジネスロジックの結果を返す
+  - エラー時には例外ServiceExceptionを投げる
 ## Entity
 - Reservation
   - 予約情報を表現する
@@ -89,12 +47,66 @@
 ## ValueObject
 - ReservationForm
   - 予約情報を表現する
-- ReservationResponse
-  - 予約結果を表すインターフェース
-- ReservationSuccessResponse implements ReservationResponse
-  - 予約情報を表現する
-- ReservationErrorResponse implements ReservationResponse
-  - エラー情報を表現する
+- AppResponse
+  - エンドポイントの実行結果を表すインターフェース
+  - getStatus()
+- ReservationResponse implements AppResponse
+  - 予約作成時の成功結果を表すクラス
+  - getReservationId(): 予約ID
+- ReservationManagerResponse implements AppResponse
+  - 予約管理者登録時の成功結果を表すクラス
+  - getReservationManagerId(): 予約管理者ID
+- ErrorResponse implements AppResponse
+  - エラー時の結果を表すクラス
+  - getErrorCode(): エラーコード
+  - getReason(): エラーの原因を表す文字列
+- ServiceException
+  - Serviceが送出する、ビジネスロジックの異常系を表す例外クラス
+  - getErrorResponse()
+- ErrorCode
+  - エラーコードを表すenum
+
+# テーブル構成
+
+## reservationsテーブル
+- reservation_id
+- name
+- email
+- phone_number
+- time_slot: DateTime
+- purpose
+- manager_id
+- created_at
+- updated_at
+
+## reservation_managersテーブル
+- manager_id
+- name
+- email
+- phone_number
+- created_at
+- updated_at
+
+# エンドポイント
+これから以下のエンドポイントを実装する。
+
+- エンドポイント: `POST /managers`
+- Form
+  - name: 名前
+  - email: 連絡先メールアドレス
+  - phone_number: 連絡先電話番号
+- Response
+  - 成功時: 200 OK
+    - status: "ok"
+    - reservation_manager_id: 予約管理者ID
+  - 失敗時: 409 Conflict
+    - status: "error"
+    - error_code: エラーコードを表す識別子
+    - reason: エラーの原因を説明する文字列
+- ビジネスロジック
+  - フォームから予約管理者のデータを読み取る。
+  - 連絡先メールアドレスで予約管理者を検索し、既に存在していればエラーを返す
+  - 予約管理者が存在しない場合、新規に作成する
 
 # 実装
 ## 記法
