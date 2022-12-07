@@ -1,6 +1,6 @@
 package org.autotaker.gpt_gen.meeting.reservations;
 
-public class ReservationSuccessResponse implements ReservationResponse {
+public class ReservationSuccessResponse implements AppResponse {
     private String status;
     private Long id;
 

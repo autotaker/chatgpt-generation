@@ -12,10 +12,10 @@ public class ReservationService {
     @Autowired
     private ReservationManagerRepository reservationManagerRepository;
 
-    public ReservationResponse createReservation(Long managerId, ReservationForm reservationForm) {
+    public Reservation createReservation(Long managerId, ReservationForm reservationForm) throws ErrorResponse {
         Optional<ReservationManager> reservationManager = reservationManagerRepository.findById(managerId);
         if (!reservationManager.isPresent()) {
-            return new ReservationErrorResponse(ErrorCode.RESERVATION_MANAGER_NOT_FOUND, "予約管理者が見つかりません");
+            throw new ErrorResponse(ErrorCode.RESERVATION_MANAGER_NOT_FOUND, "予約管理者が見つかりません");
         }
         Reservation reservation = new Reservation(reservationForm.getName(),
                 reservationForm.getEmail(),
@@ -24,6 +24,20 @@ public class ReservationService {
                 reservationForm.getPurpose(),
                 reservationManager.get());
         reservationRepository.save(reservation);
-        return new ReservationSuccessResponse(reservation.getReservationId());
+        return reservation;
+    }
+
+    public ReservationManager createReservationManager(ReservationManagerForm reservationManagerForm)
+            throws ErrorResponse {
+        Optional<ReservationManager> reservationManager = reservationManagerRepository
+                .findByEmail(reservationManagerForm.getEmail());
+        if (reservationManager.isPresent()) {
+            throw new ErrorResponse(ErrorCode.RESERVATION_MANAGER_ALREADY_EXISTS, "予約管理者が既に存在します");
+        }
+        ReservationManager newReservationManager = new ReservationManager(reservationManagerForm.getName(),
+                reservationManagerForm.getEmail(),
+                reservationManagerForm.getPhoneNumber());
+        reservationManagerRepository.save(newReservationManager);
+        return newReservationManager;
     }
 }

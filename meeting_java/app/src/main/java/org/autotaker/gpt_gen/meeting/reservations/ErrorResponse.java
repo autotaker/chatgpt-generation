@@ -1,16 +1,17 @@
 package org.autotaker.gpt_gen.meeting.reservations;
 
-public class ReservationErrorResponse implements AppResponse {
-    private String status;
-    private ErrorCode errorCode;
-    private String reason;
+public class ErrorResponse extends Exception implements AppResponse {
+    private final String status = "error";
+    private final ErrorCode errorCode;
+    private final String reason;
 
-    public ReservationErrorResponse(ErrorCode errorCode, String reason) {
-        this.status = "error";
+    public ErrorResponse(ErrorCode errorCode, String reason) {
+        super(errorCode + ": " + reason);
         this.errorCode = errorCode;
         this.reason = reason;
     }
 
+    @Override
     public String getStatus() {
         return status;
     }
