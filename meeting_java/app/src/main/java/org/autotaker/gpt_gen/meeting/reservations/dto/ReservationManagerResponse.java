@@ -1,4 +1,4 @@
-package org.autotaker.gpt_gen.meeting.reservations;
+package org.autotaker.gpt_gen.meeting.reservations.dto;
 
 public class ReservationManagerResponse implements AppResponse {
     private final String status = "ok";

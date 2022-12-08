@@ -1,4 +1,4 @@
-package org.autotaker.gpt_gen.meeting.reservations;
+package org.autotaker.gpt_gen.meeting.reservations.entity;
 
 import lombok.Builder;
 import lombok.Data;

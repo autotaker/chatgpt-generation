@@ -2,6 +2,13 @@ package org.autotaker.gpt_gen.meeting.reservations;
 
 import java.util.Optional;
 
+import org.autotaker.gpt_gen.meeting.reservations.dto.ErrorResponse;
+import org.autotaker.gpt_gen.meeting.reservations.dto.ReservationForm;
+import org.autotaker.gpt_gen.meeting.reservations.dto.ReservationManagerForm;
+import org.autotaker.gpt_gen.meeting.reservations.entity.Reservation;
+import org.autotaker.gpt_gen.meeting.reservations.entity.ReservationManager;
+import org.autotaker.gpt_gen.meeting.reservations.repository.ReservationManagerRepository;
+import org.autotaker.gpt_gen.meeting.reservations.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

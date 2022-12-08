@@ -1,4 +1,6 @@
-package org.autotaker.gpt_gen.meeting.reservations;
+package org.autotaker.gpt_gen.meeting.reservations.dto;
+
+import org.autotaker.gpt_gen.meeting.reservations.ErrorCode;
 
 public class ErrorResponse implements AppResponse {
     private final String status = "error";
