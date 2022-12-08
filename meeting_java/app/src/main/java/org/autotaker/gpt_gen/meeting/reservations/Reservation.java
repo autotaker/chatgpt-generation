@@ -1,17 +1,26 @@
 package org.autotaker.gpt_gen.meeting.reservations;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +31,13 @@ public class Reservation {
     private LocalDateTime timeSlot;
     private String purpose;
     private Long managerId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @CreatedDate
+    private Instant createdAt;
+    @LastModifiedDate
+    private Instant updatedAt;
 
-    public Reservation(String name, String email, String phoneNumber, LocalDateTime timeSlot, String purpose,
+    @Builder
+    private Reservation(String name, String email, String phoneNumber, LocalDateTime timeSlot, String purpose,
             ReservationManager manager) {
         this.name = name;
         this.email = email;
@@ -33,7 +45,5 @@ public class Reservation {
         this.timeSlot = timeSlot;
         this.purpose = purpose;
         this.managerId = manager.getManagerId();
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
     }
 }

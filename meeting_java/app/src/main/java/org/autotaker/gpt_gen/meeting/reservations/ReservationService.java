@@ -25,12 +25,14 @@ public class ReservationService {
         if (!reservationManager.isPresent()) {
             throw new ServiceException(new ErrorResponse(ErrorCode.RESERVATION_MANAGER_NOT_FOUND, "予約管理者が見つかりません"));
         }
-        Reservation reservation = new Reservation(reservationForm.getName(),
-                reservationForm.getEmail(),
-                reservationForm.getPhoneNumber(),
-                reservationForm.getTimeSlot(),
-                reservationForm.getPurpose(),
-                reservationManager.get());
+        Reservation reservation = Reservation.builder()
+                .name(reservationForm.getName())
+                .email(reservationForm.getEmail())
+                .phoneNumber(reservationForm.getPhoneNumber())
+                .timeSlot(reservationForm.getTimeSlot())
+                .purpose(reservationForm.getPurpose())
+                .manager(reservationManager.get())
+                .build();
         reservationRepository.save(reservation);
         return reservation;
     }
@@ -50,9 +52,11 @@ public class ReservationService {
             throw new ServiceException(
                     new ErrorResponse(ErrorCode.RESERVATION_MANAGER_ALREADY_EXISTS, "予約管理者が既に存在します"));
         }
-        ReservationManager newReservationManager = new ReservationManager(reservationManagerForm.getName(),
-                reservationManagerForm.getEmail(),
-                reservationManagerForm.getPhoneNumber());
+        ReservationManager newReservationManager = ReservationManager.builder()
+                .name(reservationManagerForm.getName())
+                .email(reservationManagerForm.getEmail())
+                .phoneNumber(reservationManagerForm.getPhoneNumber())
+                .build();
         reservationManagerRepository.save(newReservationManager);
         return newReservationManager;
     }
