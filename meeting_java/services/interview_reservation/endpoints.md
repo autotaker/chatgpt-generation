@@ -1,18 +1,25 @@
 # REST APIエンドポイント一覧
 - GET /api/v1/interviews
   - 予約管理者が担当する面談一覧を取得する
+  -　認証あり
 - POST /api/v1/interviews/link
   - 面談予約フォームのリンクを発行する
-- POST /api/v1/interviews/:id/register
+  -　認証あり
+- POST /api/v1/interview_form
   - 予約フォームを登録する
-  - 認証なしだが一回のみ登録可能
+  - 認証なし
 - GET /api/v1/interviews/:id
   - 面談を取得する
+  -　認証あり
 - PUT /api/v1/interviews/:id
   - 面談を更新する
+  -　認証あり
 - DELETE /api/v1/interviews/:id
   - 面談を削除する
+  -　認証あり
 - POST /api/v1/interviews/:id/confirm
   - 面談を確定する
+  -　認証あり
 - POST /api/v1/interviews/:id/cancel
   - 面談をキャンセルする
+  -　認証あり
