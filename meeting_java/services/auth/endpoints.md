@@ -14,7 +14,7 @@
 - POST /api/v1/auth/password_reset_link
   - パスワードリセットリンクを発行し、メールで送る
   - 認証なし
-- POST /api/v1/auth/password_reset
+- POST /api/v1/auth/reset_password
   - パスワードをリセットする
   - 認証なし
 - GET /api/v1/user

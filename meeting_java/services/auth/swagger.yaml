@@ -1,0 +1,206 @@
+openapi: 3.0.1
+info:
+  title: User Management API
+  description: ユーザ管理API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+components:
+  schemas:
+    SignupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ユーザ名
+          example: ユーザ名
+        email:
+          type: string
+          description: メールアドレス
+          example: example@example.com
+        password:
+          type: string
+          description: パスワード
+          example: password
+        phoneNumber:
+          type: string
+          description: 電話番号
+          example: 090-1234-5678
+      required:
+        - name
+        - email
+        - password
+        - phoneNumber
+    SignupResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: ユーザを登録しました
+    SigninRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: メールアドレス
+          example: example@example.com
+        password:
+          type: string
+          description: パスワード
+          example: password
+      required:
+        - email
+        - password
+    SigninResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: ログインしました
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiZXhwIjoxNTkzMzU0NzU0fQ.XQ-Xq_Q-Xq_Q-Xq_Q-Xq_Q-Xq_Q-Xq_Q-Xq_Q-Xq_Q
+    PasswordResetLinkRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: メールアドレス
+          example: user@example.com
+    PasswordResetLinkResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: メッセージ
+    ResetPasswordRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          description: パスワード
+        token:
+          type: string
+          description: トークン
+    ResetPasswordResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: メッセージ
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: エラーコード
+        message:
+          type: string
+          description: エラーメッセージ
+
+paths:
+  /auth/signup:
+    post:
+      tags:
+        - Auth
+      summary: ユーザを登録する
+      description: ユーザを登録する
+      operationId: signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: ユーザを登録した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupResponse'
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 既に登録されているメールアドレス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/signin:
+    post:
+      tags:
+        - Auth
+      summary: ログインする
+      description: ログインする
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SigninRequest'
+      responses:
+        200:
+          description: ログインに成功した場合
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SigninResponse'
+        400:
+          description: ログインに失敗した場合
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/password_reset_link:
+    post:
+      tags:
+        - Auth
+      summary: パスワードリセットリンクを発行し、メールで送る
+      description: パスワードリセットリンクを発行し、メールで送る
+      operationId: passwordResetLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetLinkRequest'
+      responses:
+        '200':
+          description: パスワードリセットリンクを発行し、メールで送る
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetLinkResponse'
+  /auth/reset_password:
+    post:
+      tags:
+        - Auth
+      summary: パスワードをリセットする
+      description: パスワードをリセットする
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+      responses:
+        '200':
+          description: パスワードをリセットした
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResetPasswordResponse'
+        '400':
+          description: リクエストが不正
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    
