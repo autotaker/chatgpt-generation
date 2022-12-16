@@ -8,10 +8,8 @@ import org.autotaker.gpt_gen.meeting.reservations.dto.ReservationResponse;
 import org.autotaker.gpt_gen.meeting.reservations.entity.Reservation;
 import org.autotaker.gpt_gen.meeting.reservations.entity.ReservationManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@SpringBootApplication
-@EnableJpaAuditing
 public class ReservationController {
     @Autowired
     private ReservationService reservationService;
@@ -34,7 +30,7 @@ public class ReservationController {
      */
     @PostMapping(value = "/reservations", consumes = { "application/json", "application/x-www-form-urlencoded" })
     public ResponseEntity<AppResponse> createReservation(@RequestParam("manager_id") Long managerId,
-            @RequestBody ReservationForm reservationForm) {
+            ReservationForm reservationForm) {
         try {
             Reservation reservation = reservationService.createReservation(managerId, reservationForm);
             return ResponseEntity.ok(new ReservationResponse(reservation.getReservationId()));
@@ -49,9 +45,10 @@ public class ReservationController {
      * @param reservationManagerForm 予約管理者情報
      * @return 予約管理者ID
      */
-    @PostMapping(value = "/managers", consumes = { "application/json", "application/x-www-form-urlencoded" })
+    @PostMapping(value = "/managers", consumes = { MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_FORM_URLENCODED_VALUE })
     public ResponseEntity<AppResponse> createReservationManager(
-            @RequestBody ReservationManagerForm reservationManagerForm) {
+            ReservationManagerForm reservationManagerForm) {
         try {
             ReservationManager reservationManager = reservationService
                     .createReservationManager(reservationManagerForm);
@@ -61,7 +58,4 @@ public class ReservationController {
         }
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(ReservationController.class, args);
-    }
 }

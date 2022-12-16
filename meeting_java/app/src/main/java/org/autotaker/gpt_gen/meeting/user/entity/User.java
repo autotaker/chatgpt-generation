@@ -47,4 +47,5 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.role = UserRole.USER;
     }
+
 }
