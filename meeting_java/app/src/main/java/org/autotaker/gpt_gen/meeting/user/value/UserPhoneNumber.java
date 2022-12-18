@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 
 @Embeddable
@@ -15,5 +17,6 @@ import jakarta.persistence.Column;
 public class UserPhoneNumber {
     @Size(max = 255)
     @Column(name = "phone_number")
+    @JsonProperty("phone_number")
     private String value;
 }

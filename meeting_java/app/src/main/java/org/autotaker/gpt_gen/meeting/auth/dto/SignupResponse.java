@@ -5,5 +5,5 @@ import org.autotaker.gpt_gen.meeting.common.AppResponse;
 
 @Value
 public class SignupResponse implements AppResponse {
-    String message;
+    private final String message;
 }

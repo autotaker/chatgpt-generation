@@ -7,6 +7,8 @@ import org.autotaker.gpt_gen.meeting.user.value.UserRole;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.autotaker.gpt_gen.meeting.user.dto.UserDetailsDto;
+import org.autotaker.gpt_gen.meeting.user.dto.UserProfileResponse;
 import org.autotaker.gpt_gen.meeting.user.value.UserEmail;
 import org.autotaker.gpt_gen.meeting.user.value.UserPassword;
 import org.autotaker.gpt_gen.meeting.user.value.UserPhoneNumber;
@@ -46,6 +48,15 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.role = UserRole.USER;
+    }
+
+    public UserDetailsDto toUserDetailsDto() {
+        return new UserDetailsDto(id, email, password, role.getAuthorities());
+
+    }
+
+    public UserProfileResponse toUserProfileResponse() {
+        return new UserProfileResponse(id, name, email, phoneNumber);
     }
 
 }

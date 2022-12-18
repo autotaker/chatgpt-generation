@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .findByEmail(new UserEmail(username))
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
-        return new UserDetailsDto(user);
+        return user.toUserDetailsDto();
     }
 
 }
